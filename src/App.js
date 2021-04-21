@@ -1,7 +1,19 @@
 import logo from './logo.svg';
 import './App.css';
+import cats from './Cats'
+
+const buttons = (buttons) => {
+  return <div>
+    {buttons.map(b =>
+      <button onClick={() => b.action}>{b.name}</button>
+    )}
+  </div>
+
+}
 
 function App() {
+
+  console.log()
   return (
     <div className="App">
       <header className="App-header">
@@ -17,6 +29,7 @@ function App() {
         >
           Learn React
         </a>
+        <button onClick={() => { cats.droop.tick() }}></button>
       </header>
     </div>
   );
