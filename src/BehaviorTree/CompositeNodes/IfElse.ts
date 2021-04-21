@@ -16,10 +16,11 @@ class IfElse<S> extends Composite<S> {
     }
     
     onInitialize = (obj: S): void => {
+        const bo: BehaviorObserver<S> = new BehaviorObserver(this);
+        this.bt.start(this.children[this.predicate(obj) ? 0 : 1], bo);
      }
     
     onChildComplete = (): void => {
-        console.log('child complete if else')
         const current: Behavior<S> = this.children[this.predicate ? 0 : 1];
         this.bt.end(this, current.getStatus())
     }
@@ -29,9 +30,8 @@ class IfElse<S> extends Composite<S> {
     }
     
     update = (obj: S): Status => {
-        const bo: BehaviorObserver<S> = new BehaviorObserver(this);
-        this.bt.start(this.children[this.predicate(obj) ? 0 : 1], bo);
-        return 'RUNNING';
+        const current: Behavior<S> = this.children[this.predicate ? 0 : 1];
+        return current.getStatus();
     }
 }
 

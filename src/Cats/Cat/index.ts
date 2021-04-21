@@ -15,13 +15,20 @@ class Cat {
         this.description = desc;
         this.bx = bx;
         this.bt = bt;
-        this.bt.start(bx)
+        
+    }
+
+    getStats = (): CatStats => {
+        return this.bt.state;
     }
 
     tick = (): String => {
+        this.bt.start(this.bx)
         const b = this.bt.tick()
         return b ? 'true' : 'false';
     }
+    
+    
 }
 
 export default Cat

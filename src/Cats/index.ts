@@ -13,16 +13,45 @@ class Hiss extends Behavior.Action<CatStats> {
     }
 }
 
+class Win extends Behavior.Action<CatStats> {
+    update = (obj: CatStats): Status => {
+        console.log('you win!')
+        return 'FAILURE';
+    }
+}
+
+class Lose extends Behavior.Action<CatStats> {
+    update = (obj: CatStats): Status => {
+        obj.happiness++;
+        console.log('You lost!')
+        return 'FAILURE';
+    }
+}
+
 class DontHiss extends Behavior.Action<CatStats> {
     update = (obj: CatStats): Status => {
-        obj.annoyance += 1
-        console.log('dont hiss')
         return 'SUCCESS';
     }
 }
 
-const bx = new Behavior.RepeatOnResult('until win', bt,
-    new Behavior.IfElse<CatStats>('hiss if annoyed', bt, [new Hiss(), new DontHiss()], (obj: CatStats) => { console.log(obj); return obj.annoyance > 4; }, 'SUCCESS')
+class Purr extends Behavior.Action<CatStats> {
+    update = (obj: CatStats): Status => {
+        obj.happiness++;
+        console.log('purr')
+        return 'SUCCESS';
+    }
+}
+
+const bx = //new Behavior.RepeatOnResult('until win', bt,
+    new Behavior.IfElse<CatStats>('end if won', bt, [new Win(),
+        new Behavior.IfElse<CatStats>('end if lose', bt, [new Lose(),
+        new Behavior.IfElse<CatStats>('hiss if annoyed', bt, [
+            new Hiss(),
+            new DontHiss()],
+            (c: CatStats) => { return c.annoyance > 4; }),
+        ],(c: CatStats) => { return c.annoyance > 4})
+    ], (c: CatStats) => {  return c.happiness > 5; },
+        //'FAILURE')
 )
 
 const droop = new Cat('droop', "he's got droopy eyebrows and a big ole frown", bx, bt);

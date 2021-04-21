@@ -16,18 +16,15 @@ class RepeatOnResult<S> extends Decorator<S> {
     }
 
     onInitialize = (obj: S): void => {
-
+        const bo: BehaviorObserver<S> = new BehaviorObserver(this);
+        this.bt.start(this.child, bo);
     }
 
     update = (obj: S): Status => {
-        const bo: BehaviorObserver<S> = new BehaviorObserver(this);
-        this.bt.start(this.child, bo);
-        console.log('add')
         return 'RUNNING'
     }
 
     onChildComplete = (): void => {
-        console.log('repeatonresult onChildComplete')
         const s:Status = this.child.getStatus()
         if (s === this.result) {
             const bo: BehaviorObserver<S> = new BehaviorObserver(this);

@@ -8,7 +8,6 @@ class CatStats {
         this.happiness = happiness;
         this.annoyance = annoyance;
     }
-
 }
 
 export default CatStats;
