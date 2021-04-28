@@ -7,22 +7,23 @@ import BehaviorObserver from '../BehaviorObserver';
 /**
  * 
  */
-class IfElse<S> extends Composite<S> {
-    protected predicate: (s: S) => boolean;
+class IfElse<S, G> extends Composite<S, G> {
+    protected predicate: (s: S, g: G) => boolean;
+    protected child: Behavior<S, G> = null;
 
-        constructor(name: String, bt: BehaviorTree<S>, children: [Behavior<S>, Behavior<S>], predicate: (s: S) => boolean) {
+        constructor(name: String, bt: BehaviorTree<S, G>, children: [Behavior<S, G>, Behavior<S, G>], predicate: (s: S, g: G) => boolean) {
         super(name, bt, children);
         this.predicate = predicate;
     }
     
-    onInitialize = (obj: S): void => {
-        const bo: BehaviorObserver<S> = new BehaviorObserver(this);
-        this.bt.start(this.children[this.predicate(obj) ? 0 : 1], bo);
+    onInitialize = (obj: S, gs: G): void => {
+        const bo: BehaviorObserver<S, G> = new BehaviorObserver(this);
+        this.child = this.children[this.predicate(obj, gs) ? 0 : 1]
+        this.bt.start(this.child, bo);
      }
     
-    onChildComplete = (s: S): void => {
-        const current: Behavior<S> = this.children[this.predicate(s) ? 0 : 1];
-        this.bt.end(this, current.getStatus())
+    onChildComplete = (s: S, gs: G): void => {
+        this.bt.end(this, this.child.getStatus(), gs)
     }
 }
 

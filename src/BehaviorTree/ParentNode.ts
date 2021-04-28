@@ -1,23 +1,23 @@
 import Behavior from './Behavior'
 import BehaviorTree from './BehaviorTree'
-import { Status } from './Status' 
+import { Status } from './Status';
 
-abstract class ParentNode<S> extends Behavior<S> {
-    protected bt: BehaviorTree<S>;
+abstract class ParentNode<S, G> extends Behavior<S, G> {
+    protected bt: BehaviorTree<S, G>;
 
-    constructor(name: String, bt: BehaviorTree<S>) {
+    constructor(name: String, bt: BehaviorTree<S, G>) {
         super(name);
         this.bt = bt;
     }
 
-    update = (obj: S): Status => {
-        return 'RUNNING';
+    update = (s: S, gs: G): Status =>  {
+        return 'RUNNING'
     }
 
-    abstract onChildComplete(s: S): void;
+    abstract onChildComplete(s: S, gs: G): void;
 
-    notify = (s: S): void => {
-        this.onChildComplete(s);
+    notify = (s: S, gs: G): void => {
+        this.onChildComplete(s, gs);
     }
 
 }

@@ -6,15 +6,15 @@ import BehaviorObserver from "../BehaviorObserver";
 /**
  * always return success
  */
-class Inverter<S> extends Decorator<S> {
+class Inverter<S, G> extends Decorator<S, G> {
 
-    onInitialize = (obj: S): void => {
+    onInitialize = (obj: S, gs: G): void => {
         const bo = new BehaviorObserver(this)
         this.bt.start(this.child, bo)
     }
 
-    onChildComplete = (s: S): void => {
-        this.bt.end(this, 'SUCCESS')
+    onChildComplete = (s: S, gs: G): void => {
+        this.bt.end(this, 'SUCCESS', gs)
     }
 }
      

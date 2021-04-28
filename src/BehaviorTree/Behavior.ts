@@ -1,14 +1,14 @@
 import { Status } from './Status'
 import BehaviorObserver from './BehaviorObserver'
 
-abstract class Behavior<S> {
+abstract class Behavior<S, G> {
     protected name: String;
     protected status: Status;
-    protected observer: BehaviorObserver<S>;
+    protected observer: BehaviorObserver<S, G>;
     public stopAfter: boolean;
 
     constructor(name: String, stopAfter: boolean = false) {
-        this.name = name;
+        this.name = name || this.constructor.name;
         this.stopAfter = stopAfter;
         this.status = null;
         this.observer = null;
@@ -17,16 +17,16 @@ abstract class Behavior<S> {
     /**
      * called once, immediately before the first call to the behavior’s update method
      */
-    onInitialize = (obj: S): void => {}
+    onInitialize = (obj: S, gs: G): void => {}
 
     /**
      * called  exactly  once  each  time  the  behavior  tree  is updated, until it signals it has terminated thanks to its return status.
      */
-    abstract update(obj: S): Status;
+    abstract update(obj: S, gameState: G): Status;
 
-    tick = (obj: S): Status => {
-        this.status !== 'RUNNING' && this.onInitialize(obj)
-        this.status = this.update(obj);
+    tick = (obj: S, gameState: G): Status => {
+        this.status !== 'RUNNING' && this.onInitialize(obj, gameState)
+        this.status = this.update(obj, gameState);
         this.status !== 'RUNNING' && this.onTerminate(this.status, obj)
         return this.status
     }
@@ -35,11 +35,11 @@ abstract class Behavior<S> {
 
     reset = (): void => {this.status = null;}
 
-    setObserver = (obv: BehaviorObserver<S>): void => {this.observer = obv;}
+    setObserver = (obv: BehaviorObserver<S, G>): void => {this.observer = obv;}
 
-    getObserver = (): BehaviorObserver<S> => this.observer
+    getObserver = (): BehaviorObserver<S, G> => this.observer
 
-    notify = (s: S): void => { }
+    notify = (s: S, gs: G): void => { }
     
     setStatus = (status: Status): void => { this.status = status; }
     

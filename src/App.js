@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import cats from './Cats'
+import GameState from './GameState';
 
 const buttons = (buttons) => {
   return <div>
@@ -12,15 +13,13 @@ const buttons = (buttons) => {
 }
 
 function App() {
-
-  const droop = cats.droop;
+  const state = new GameState(cats.droop)
   return (
     <div className="App">
       <header className="App-header">
-        <button onClick={() => { droop.getStats().annoyance++; droop.tick(); }}>Poke</button>
-        <button onClick={() => { droop.getStats().hunger--; droop.tick(); }}>Feed</button>
-        <button onClick={() => { droop.getStats().happiness++; droop.tick(); }}>Pet</button>
-
+        {['Poke', 'Feed', 'Pet', 'Do nothing'].map(action => 
+            <button key={action} onClick={() => { state.handleAction(action) }}>{action}</button>
+        )}
       </header>
     </div>
   );

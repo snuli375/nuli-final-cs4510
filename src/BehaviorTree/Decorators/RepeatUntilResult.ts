@@ -7,29 +7,27 @@ import BehaviorTree from '../BehaviorTree'
 /**
  * repeat until status matches result
  */
-class RepeatUntilResult<S> extends Decorator<S> {
+class RepeatUntilResult<S, G> extends Decorator<S, G> {
     protected result: Status;
     
-    constructor(name: String, bt: BehaviorTree<S>, child: Behavior<S>, result: Status) {
+    constructor(name: String, bt: BehaviorTree<S, G>, child: Behavior<S, G>, result: Status) {
         super(name, bt, child);
         this.result = result;
     }
 
-    onInitialize = (obj: S): void => {
-        console.log('onInitialize RepeatOnResult')
-        // debugger;
-        const bo: BehaviorObserver<S> = new BehaviorObserver(this);
+    onInitialize = (obj: S, gs: G): void => {
+        // 
+        const bo: BehaviorObserver<S, G> = new BehaviorObserver(this);
         this.bt.start(this.child, bo);
     }
 
-    onChildComplete = (s: S): void => {
-        console.log('onchildcomplete RepeatUntilResult' + this.child.getStatus())
+    onChildComplete = (s: S, gs: G): void => {
         const status: Status = this.child.getStatus()
         if (status !== this.result) {
-            const bo: BehaviorObserver<S> = new BehaviorObserver(this);
+            const bo: BehaviorObserver<S, G> = new BehaviorObserver(this);
             this.bt.start(this.child, bo);
         } else {
-             this.bt.end(this, 'SUCCESS')
+             this.bt.end(this, 'SUCCESS', gs)
         }
     }
 }
