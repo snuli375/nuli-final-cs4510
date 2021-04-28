@@ -20,18 +20,9 @@ class IfElse<S> extends Composite<S> {
         this.bt.start(this.children[this.predicate(obj) ? 0 : 1], bo);
      }
     
-    onChildComplete = (): void => {
-        const current: Behavior<S> = this.children[this.predicate ? 0 : 1];
+    onChildComplete = (s: S): void => {
+        const current: Behavior<S> = this.children[this.predicate(s) ? 0 : 1];
         this.bt.end(this, current.getStatus())
-    }
-
-    notify = (): void => {
-        this.onChildComplete()
-    }
-    
-    update = (obj: S): Status => {
-        const current: Behavior<S> = this.children[this.predicate ? 0 : 1];
-        return current.getStatus();
     }
 }
 

@@ -13,9 +13,9 @@ class Inverter<S> extends Decorator<S> {
         this.bt.start(this.child, bo)
     }
 
-    onChildComplete = (): void => {
-        const s:Status = this.child.getStatus()
-        this.bt.end(this, s === 'SUCCESS' ? 'FAILURE' : s === 'FAILURE' ? 'SUCCESS' : s)
+    onChildComplete = (s: S): void => {
+        const status:Status = this.child.getStatus()
+        this.bt.end(this, status === 'SUCCESS' ? 'FAILURE' : status === 'FAILURE' ? 'SUCCESS' : status)
     }
 }
      

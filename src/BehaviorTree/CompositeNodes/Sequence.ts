@@ -17,12 +17,12 @@ class Sequence<S> extends Composite<S> {
          this.bt.start(this.children[this.index], bo);
      }
     
-    onChildComplete = (): void => {
+    onChildComplete = (s: S): void => {
         const current: Behavior<S> = this.children[this.index];
-        const s: Status = current.getStatus();
-        if (s === 'FAILURE') {
+        const status: Status = current.getStatus();
+        if (status === 'FAILURE') {
             this.bt.end(this, 'FAILURE');
-        } else if (s === 'SUCCESS') {
+        } else if (status === 'SUCCESS') {
             if (this.index === this.children.length - 1) { // end of children
                 this.bt.end(this, 'SUCCESS')
             } else { // more children
@@ -31,10 +31,6 @@ class Sequence<S> extends Composite<S> {
                 this.bt.start(this.children[this.index], bo)
             }
         }
-    }
-
-    notify = (): void => {
-        this.onChildComplete()
     }
 }
 

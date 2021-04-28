@@ -13,13 +13,9 @@ class RandomSelector<S> extends Composite<S> {
          this.bt.start(this.children[this.index], bo);
      }
     
-    onChildComplete = (): void => {
-        this.bt.end(this.children[this.index], this.children[this.index].getStatus())
+    onChildComplete = (s: S): void => {
+        this.bt.end(this, this.children[this.index].getStatus())
      }
-
-    notify = (): void => {
-        this.onChildComplete()
-    }
     
 }
 

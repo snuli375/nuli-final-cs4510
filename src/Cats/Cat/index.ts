@@ -23,9 +23,13 @@ class Cat {
     }
 
     tick = (): String => {
-        this.bt.start(this.bx)
-        const b = this.bt.tick()
-        return b ? 'true' : 'false';
+        if (this.bt.hasActions()) {
+            this.bt.tick()
+        } else {
+            this.bt.start(this.bx)
+            this.bt.tick()
+        }
+        return 'hi'
     }
     
     

@@ -5,9 +5,11 @@ abstract class Behavior<S> {
     protected name: String;
     protected status: Status;
     protected observer: BehaviorObserver<S>;
+    public stopAfter: boolean;
 
-    constructor(name: String) {
+    constructor(name: String, stopAfter: boolean = false) {
         this.name = name;
+        this.stopAfter = stopAfter;
         this.status = null;
         this.observer = null;
     }
@@ -23,13 +25,13 @@ abstract class Behavior<S> {
     abstract update(obj: S): Status;
 
     tick = (obj: S): Status => {
-        this.status === null && this.onInitialize(obj)
+        this.status !== 'RUNNING' && this.onInitialize(obj)
         this.status = this.update(obj);
         this.status !== 'RUNNING' && this.onTerminate(this.status, obj)
         return this.status
     }
 
-    getStatus = (): Status => this.status
+    getStatus = (): Status => {return this.status}
 
     reset = (): void => {this.status = null;}
 
@@ -37,9 +39,11 @@ abstract class Behavior<S> {
 
     getObserver = (): BehaviorObserver<S> => this.observer
 
-    notify = (): void => { }
+    notify = (s: S): void => { }
     
-    setStatus = (status: Status): void => {this.status = status;}
+    setStatus = (status: Status): void => { this.status = status; }
+    
+    isParent = (): boolean => {return false}
 
     /**
      *  method  is  called  once,  immediately  after  the  previous update signals it’s no longer running

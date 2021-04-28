@@ -6,6 +6,7 @@ import AlwaysSucceed from './Decorators/AlwaysSucceed.ts'
 import Inverter from './Decorators/Inverter.ts'
 import Repeater from './Decorators/Repeater.ts'
 import RepeatOnResult from './Decorators/RepeatOnResult.ts'
+import RepeatUntilResult from './Decorators/RepeatUntilResult.ts'
 import BehaviorTree from './BehaviorTree.ts'
 import Action from './Behavior.ts'
 
@@ -18,6 +19,7 @@ const bx = {
     Inverter,
     Repeater,
     RepeatOnResult,
+    RepeatUntilResult,
     BehaviorTree,
     Action
 }

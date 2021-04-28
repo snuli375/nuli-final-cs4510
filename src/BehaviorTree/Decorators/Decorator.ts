@@ -9,6 +9,9 @@ abstract class Decorator<S> extends ParentNode<S> {
         super(name, bt);
          this.child = child;
      }
+    
+     isParent = (): boolean => {return true}
+
 }
 
 export default Decorator

@@ -10,6 +10,13 @@ abstract class Composite<S> extends ParentNode<S> {
         super(name, bt);
         this.children = children;
     }
+
+    notify = (s: S): void => {
+        this.onChildComplete(s)
+    }
+
+    isParent = (): boolean => {return true}
+
 }
 
 export default Composite

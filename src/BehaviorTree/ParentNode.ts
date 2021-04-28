@@ -14,10 +14,10 @@ abstract class ParentNode<S> extends Behavior<S> {
         return 'RUNNING';
     }
 
-    abstract onChildComplete(): void;
+    abstract onChildComplete(s: S): void;
 
-    notify = (): void => {
-        this.onChildComplete();
+    notify = (s: S): void => {
+        this.onChildComplete(s);
     }
 
 }

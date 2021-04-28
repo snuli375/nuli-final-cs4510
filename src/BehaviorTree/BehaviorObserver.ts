@@ -8,8 +8,8 @@ class BehaviorObserver<S> {
         this.subject = subject;
     }
 
-    public update(): void {
-        this.subject.notify()
+    public update(s: S): void {
+        this.subject.notify(s)
     }
 }
 

@@ -17,7 +17,6 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-
         <button onClick={() => { droop.getStats().annoyance++; droop.tick(); }}>Poke</button>
         <button onClick={() => { droop.getStats().hunger--; droop.tick(); }}>Feed</button>
         <button onClick={() => { droop.getStats().happiness++; droop.tick(); }}>Pet</button>

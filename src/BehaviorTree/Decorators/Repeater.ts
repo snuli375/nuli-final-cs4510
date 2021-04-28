@@ -22,9 +22,9 @@ class Repeater<S> extends Decorator<S> {
          this.bt.start(this.child, bo);
     }
 
-    onChildComplete = (): void => {
+    onChildComplete = (s: S): void => {
         this.count++;
-        const s:Status = this.child.getStatus()
+        const status:Status = this.child.getStatus()
         if (this.count >= this.max) {
             this.bt.end(this, 'SUCCESS')
         } else {

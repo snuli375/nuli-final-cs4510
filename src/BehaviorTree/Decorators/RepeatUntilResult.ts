@@ -5,9 +5,9 @@ import BehaviorObserver from '../BehaviorObserver';
 import BehaviorTree from '../BehaviorTree'
 
 /**
- * repeat until status doesn't match passed result
+ * repeat until status matches result
  */
-class RepeatOnResult<S> extends Decorator<S> {
+class RepeatUntilResult<S> extends Decorator<S> {
     protected result: Status;
     
     constructor(name: String, bt: BehaviorTree<S>, child: Behavior<S>, result: Status) {
@@ -17,15 +17,15 @@ class RepeatOnResult<S> extends Decorator<S> {
 
     onInitialize = (obj: S): void => {
         console.log('onInitialize RepeatOnResult')
+        // debugger;
         const bo: BehaviorObserver<S> = new BehaviorObserver(this);
         this.bt.start(this.child, bo);
     }
 
     onChildComplete = (s: S): void => {
-        console.log('onchildcomplete RepeatOnResult')
+        console.log('onchildcomplete RepeatUntilResult' + this.child.getStatus())
         const status: Status = this.child.getStatus()
-        console.log('result ' + s)
-        if (status === this.result) {
+        if (status !== this.result) {
             const bo: BehaviorObserver<S> = new BehaviorObserver(this);
             this.bt.start(this.child, bo);
         } else {
@@ -34,4 +34,4 @@ class RepeatOnResult<S> extends Decorator<S> {
     }
 }
      
-export default RepeatOnResult
+export default RepeatUntilResult

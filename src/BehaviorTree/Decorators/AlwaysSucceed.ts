@@ -13,7 +13,7 @@ class Inverter<S> extends Decorator<S> {
         this.bt.start(this.child, bo)
     }
 
-    onChildComplete = (): void => {
+    onChildComplete = (s: S): void => {
         this.bt.end(this, 'SUCCESS')
     }
 }

@@ -11,34 +11,30 @@ import BehaviorObserver from '../BehaviorObserver';
 class Selector<S> extends Composite<S> {
     protected index: number = 0;
     
-     onInitialize = (obj: S): void => {
+    onInitialize = (obj: S): void => {
+         console.log('selector oninit')
          this.index = 0;
          const bo: BehaviorObserver<S> = new BehaviorObserver(this);
          this.bt.start(this.children[this.index], bo);
      }
     
-    onChildComplete = (): void => {
+    onChildComplete = (s: S): void => {
         const current: Behavior<S> = this.children[this.index];
-        const s: Status = current.getStatus();
-        if (s === 'SUCCESS') {
-            return;
-        } else if (s === 'FAILURE') {
-            if (this.index === this.children.length - 1) { // end of children
+        const status: Status = current.getStatus();
+        console.log(`onChildComplete ${current.constructor.name} ${status}`)
+        if (status === 'SUCCESS') {
+            this.bt.end(this, 'SUCCESS')
+        } else if (status === 'FAILURE') {
+            if (this.index >= this.children.length - 1) { // end of children
                 this.bt.end(this, 'FAILURE')
             } else { // more children
                 const bo: BehaviorObserver<S> = new BehaviorObserver(this);
                 this.index++;
-                this.bt.start(this.children[this.index], bo)
+                if (this.index < this.children.length) {
+                    this.bt.start(this.children[this.index], bo)
+                }
             }
         }
-    }
-
-    notify = (): void => {
-        this.onChildComplete()
-    }
-    
-    update = (obj: S): Status => {
-        return 'RUNNING';
     }
 }
 
